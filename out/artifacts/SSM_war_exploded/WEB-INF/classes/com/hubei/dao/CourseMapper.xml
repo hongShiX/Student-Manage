@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hubei.dao.CourseMapper">
+    <select id="selectAllCourses" resultType="Course">
+        select *
+        from course
+    </select>
+
+    <select id="conditionQueryCourses" resultType="Course">
+        select * from course
+        <where>
+            1 = 1
+            <if test="cNo != null and cNo != ''">
+                and c_no = #{cNo}
+            </if>
+            <if test="cName != null and cName != ''">
+                and c_name like concat('%', #{cName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addCourse">
+        insert into course
+        values (#{cNo}, #{cName}, #{cHours}, #{cScore})
+    </insert>
+
+    <delete id="deleteCourse">
+        delete
+        from course
+        where c_no = #{cNo}
+    </delete>
+
+    <update id="updateCourse">
+        update course
+        <set>
+            <if test="cName != null and cName != ''">c_name = #{cName},</if>
+            <if test="cHours != null and cHours != ''">c_hours = #{cHours},</if>
+            <if test="cScore != null and cScore != ''">c_score = #{cScore},</if>
+        </set>
+        where c_no = #{cNo}
+    </update>
+</mapper>

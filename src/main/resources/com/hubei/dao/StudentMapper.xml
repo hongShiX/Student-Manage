@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hubei.dao.StudentMapper">
+    <!--  根据id查询学生信息  -->
+    <select id="selectById" resultType="Student">
+        select *
+        from stu
+        where stu_no = #{stuNo}
+    </select>
+
+    <select id="selectAllStudents" resultType="Student">
+        select *
+        from stu
+    </select>
+
+    <select id="conditionQuery" resultType="Student">
+        select * from stu
+        <where>
+            1 = 1
+            <if test="stuNo != null and stuNo != ''">
+                and stu_no = #{stuNo}
+            </if>
+            <if test="stuName != null and stuName != ''">
+                and stu_name = #{stuName}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectStuByClass" resultType="Student">
+        select *
+        from stu
+        where stu_class = #{stuClass}
+    </select>
+
+    <insert id="addStu">
+        insert into stu
+        values (#{stuNo}, #{stuName}, #{stuGender}, #{stuBirth}, #{stuMajor}, #{stuClass}, #{stuArea}, #{stuTele},#{stuPs})
+    </insert>
+
+    <delete id="deleteStu">
+        delete
+        from stu
+        where stu_no = #{stuNo}
+    </delete>
+
+    <update id="updateStu">
+        update stu
+        <set>
+            <if test="stuName != null and stuName != ''"> stu_name = #{stuName},</if>
+            <if test="stuGender != null and stuGender != ''"> stu_gender = #{stuGender},</if>
+            <if test="stuBirth != null and stuBirth != ''"> stu_birth = #{stuBirth},</if>
+            <if test="stuMajor != null and stuMajor != ''"> stu_major = #{stuMajor},</if>
+            <if test="stuClass != null and stuClass != ''"> stu_class = #{stuClass},</if>
+            <if test="stuArea != null and stuArea != ''"> stu_area = #{stuArea}</if>
+            <if test="stuPs != null and stuPs != ''"> stu_ps = #{stuPs}</if>
+        </set>
+        where stu_no = #{stuNo}
+
+    </update>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hubei.dao.GradeSheetMapper">
+    <select id="selectGradesByStuNo" resultType="GradeSheet">
+        select stu_no, c_no, grade from grade_sheet where stu_no = #{stuNo}
+    </select>
+
+    <select id="selectAllSheets" resultType="GradeSheet">
+        select * from grade_sheet
+    </select>
+
+    <select id="conditionQuerySheets"   resultType="GradeSheet">
+        select * from grade_sheet
+        <where>
+            1 = 1
+            <if test="stuNo != null and stuNo != ''">
+                and stu_no = #{stuNo}
+            </if>
+            <if test="cNo != null and cNo != ''">
+                and c_no = #{cNo}
+            </if>
+            <if test="minGrade != null and minGrade != ''">
+                and <![CDATA[grade >= #{minGrade}]]>
+            </if>
+            <if test="maxGrade != null and maxGrade != ''">
+                and <![CDATA[grade <= #{maxGrade}]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="getMyCScore" resultType="GradeSheet">
+        select * from grade_sheet where c_no in (select c_no from curriculum where teacher = #{name})
+    </select>
+
+    <insert id="addScore">
+        insert into grade_sheet values (#{stuNo}, #{cNo}, #{grade})
+    </insert>
+
+    <delete id="deleteGrade">
+        delete from grade_sheet where stu_no = #{stuNo} and c_no = #{cNo}
+    </delete>
+
+    <update id="updateScore">
+        update grade_sheet
+        <set>
+            <if test="grade != null and grade != ''">grade = #{grade}</if>
+        </set>
+        where stu_no = #{stuNo} and c_no = #{cNo}
+    </update>
+
+</mapper>

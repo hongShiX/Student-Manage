@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hubei.dao.UserMapper">
+    <select id="selectUserByNP" resultType="User" parameterType="User">
+        select username, password, usertype
+        from user
+        where username = #{username}
+          and password = #{password}
+    </select>
+
+    <update id="updatePassword">
+        update user
+        set password = #{currentPassword}
+        where username = #{username}
+    </update>
+
+    <select id="selectAllUsers" resultType="User">
+        select *
+        from user
+        where userType = 0
+           or userType = 1
+    </select>
+
+    <insert id="addUser">
+        insert into user
+        values (#{username}, #{password}, #{userType})
+    </insert>
+
+    <delete id="deleteByUsername">
+        delete
+        from user
+        where username = #{username}
+    </delete>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="userType != null and userType != ''">usertype = #{userType},</if>
+        </set>
+        where username = #{username}
+    </update>
+</mapper>
